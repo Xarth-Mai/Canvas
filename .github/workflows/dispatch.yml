@@ -1,0 +1,30 @@
+name: Build
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup JAVA
+        uses: actions/setup-java@v4
+        with:
+          distribution: zulu
+          java-version: 22
+          cache: gradle
+
+      - name: Build with Gradle
+        run: |
+          git config --global user.email "no-reply@github.com" && git config --global user.name "Github Actions"
+          ./gradlew applyAllPatches --no-daemon
+          ./gradlew createMojmapPaperclipJar --no-daemon
+
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-artifact
+          path: "canvas-server/build/libs/canvas-paperclip-*-mojmap.jar"

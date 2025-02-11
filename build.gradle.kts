@@ -45,6 +45,7 @@ subprojects {
         options.encoding = Charsets.UTF_8.name()
         options.release = 22
         options.isFork = true
+        options.forkOptions.memoryMaximumSize = "4G"
     }
     tasks.withType<Javadoc> {
         options.encoding = Charsets.UTF_8.name()
